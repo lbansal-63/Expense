@@ -95,9 +95,9 @@ const AIAdvisor = ({ expenses, budgetStats, userName }) => {
                                     <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 animate-fade-in">
                                         <ReactMarkdown 
                                             components={{
-                                                h1: ({node, ...props}) => <h1 className="text-2xl font-black mb-4 text-indigo-600" {...props} />,
-                                                h2: ({node, ...props}) => <h2 className="text-xl font-bold mb-3 mt-6" {...props} />,
-                                                h3: ({node, ...props}) => <h3 className="text-lg font-bold mb-2 mt-4" {...props} />,
+                                                h1: ({node, children, ...props}) => <h1 className="text-2xl font-black mb-4 text-indigo-600" {...props}>{children}</h1>,
+                                                h2: ({node, children, ...props}) => <h2 className="text-xl font-bold mb-3 mt-6" {...props}>{children}</h2>,
+                                                h3: ({node, children, ...props}) => <h3 className="text-lg font-bold mb-2 mt-4" {...props}>{children}</h3>,
                                                 li: ({node, ...props}) => <li className="mb-2 list-disc ml-4" {...props} />,
                                                 p: ({node, ...props}) => <p className="mb-4" {...props} />,
                                             }}

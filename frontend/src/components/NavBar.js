@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
 import { BsSendFill } from 'react-icons/bs'
 import { FiSun, FiMoon } from 'react-icons/fi'
 import { sendEmail } from '../utils/renders';
@@ -35,7 +34,7 @@ function NavBar(props) {
     }
   }, [darkMode]);
 
-  const userData = props.data;
+  // const userData = props.data; // Unused
 
   const getInitials = (name) => {
     if (!name) return 'U';
