@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "_id": "1773492634040",
+      "username": "ram",
+      "email": "ram12@gmail.com",
+      "password": "ram",
+      "expense_id": [],
+      "preferredCurrency": "INR",
+      "savingsGoal": 0,
+      "savingsTarget": 0,
+      "createdAt": "2026-03-14T12:50:34.040Z"
+    },
+    {
+      "_id": "1773643365573",
+      "username": "jatin",
+      "email": "jatin@gmail.com",
+      "password": "123ewq",
+      "expense_id": [],
+      "preferredCurrency": "INR",
+      "savingsGoal": 0,
+      "savingsTarget": 0,
+      "createdAt": "2026-03-16T06:42:45.573Z",
+      "avatar": "https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka"
+    },
+    {
+      "_id": "1777549692398",
+      "username": "laksha",
+      "email": "laksha@gmail.com",
+      "password": "123456",
+      "expense_id": [],
+      "preferredCurrency": "INR",
+      "savingsGoal": 0,
+      "savingsTarget": 0,
+      "createdAt": "2026-04-30T11:48:12.398Z",
+      "avatar": "https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka"
+    }
+  ],
+  "expenses": []
+}
