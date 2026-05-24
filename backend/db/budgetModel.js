@@ -1,4 +1,4 @@
-/*const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const budgetSchema = new mongoose.Schema({
     userId : {
@@ -38,4 +38,4 @@ const budgetSchema = new mongoose.Schema({
 const budgetModel = mongoose.model('budgets', budgetSchema);
 
 module.exports = budgetModel;
-*/
+

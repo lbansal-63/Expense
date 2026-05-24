@@ -31,16 +31,14 @@ function Login() {
          password
         });
         // console.log(response.data);
-        if(response.data.statusCode !== 201)
-        {
-          toast.error(response.data.message);
+        if (response.data.statusCode < 200 || response.data.statusCode >= 300) {
+          toast.error(response.data.message || 'Login failed');
+          ref.current.complete();
           return;
         }
         toast.success("Successfully Logged In !!")
-        // setUserdata(response.data.message);
         localStorage.setItem('User',JSON.stringify(response.data.message));
         ref.current.complete();
-        
         navigate('/');
 
       } catch (error) {

@@ -269,7 +269,6 @@ A: Yes! Click the delete (trash) button in budget card.
 3. Create recurring expenses
 4. Export report for records
 
----
 
 ## 🚀 Next Features Coming
 
@@ -280,7 +279,6 @@ A: Yes! Click the delete (trash) button in budget card.
 - 👥 Family expense sharing
 - 📊 Detailed reports
 
----
 
 ## 💬 Need Help?
 
@@ -289,6 +287,5 @@ A: Yes! Click the delete (trash) button in budget card.
 - Test features with sample data
 - Check browser console for errors
 
----
 
 **Happy Expense Tracking! 💰**

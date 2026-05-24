@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
 const { error, success } = require('../utils/handler');
 
 const dbPath = path.join(__dirname, '../db/localDb.json');
@@ -31,14 +32,21 @@ try { expenseModel = require('../db/expenseModel'); } catch (e) { expenseModel =
 try { userModel = require('../db/userModel'); } catch (e) { userModel = null; }
 try { tagModel = require('../db/tagModel'); } catch (e) { tagModel = null; }
 
-const useMock = process.env.MONGO_URI ? false : true; // Use MongoDB if URI is present
-
 const genId = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2,8)}`;
 
 const createExpense = async (req, res) => {
+  console.log('createExpense payload:', req.body);
   try {
     const { amount, category, date, usersid, description, tags, currency, isRecurring, recurringFrequency, splitWith } = req.body;
-    if (!amount || !category || !date || !usersid) return res.send(error(401, 'All Details Are Required'));
+    const userId = usersid || req.body.userId;
+    if (!amount || !category || !date || !userId) {
+      console.log('createExpense missing data:', { amount, category, date, userId });
+      return res.send(error(401, 'All Details Are Required'));
+    }
+    if (!useMock && !mongoose.isValidObjectId(userId)) {
+      console.log('createExpense invalid userId:', userId);
+      return res.send(error(400, 'Invalid user ID. Please login again.'));
+    }
 
     if (useMock) {
       const id = genId();
@@ -47,7 +55,7 @@ const createExpense = async (req, res) => {
         amount: Number(amount),
         category,
         date: new Date(date),
-        usersid,
+        usersid: userId,
         description: description || '',
         tags: tags || [],
         currency: currency || 'INR',
@@ -70,15 +78,18 @@ const createExpense = async (req, res) => {
     }
 
     // DB mode
-    const expenseData = { amount, category, date: new Date(date), usersid, description, tags: tags || [], currency: currency || 'INR', isRecurring: isRecurring || false, recurringFrequency: recurringFrequency || 'none', splitWith: splitWith || [] };
-    const newExpense = await expenseModel.create(expenseData);
-    if (userModel) {
-      const user = await userModel.findById(usersid).populate('expense_id');
-      if (user) {
-        user.expense_id.push(newExpense._id);
-        await user.save();
-      }
+    if (!userModel) {
+      return res.send(error(500, 'User model unavailable.')); 
     }
+    const user = await userModel.findById(userId).populate('expense_id');
+    if (!user) {
+      console.log('createExpense failed: no user found for', userId);
+      return res.send(error(401, 'User not found. Please login again.'));
+    }
+    const expenseData = { amount, category, date: new Date(date), usersid: userId, description, tags: tags || [], currency: currency || 'INR', isRecurring: isRecurring || false, recurringFrequency: recurringFrequency || 'none', splitWith: splitWith || [] };
+    const newExpense = await expenseModel.create(expenseData);
+    user.expense_id.push(newExpense._id);
+    await user.save();
     // update tags if tagModel exists
     if (tagModel && tags && tags.length > 0) {
       for (let t of tags) {
@@ -153,9 +164,13 @@ const deleteExpense = async (req, res) => {
 };
 
 const getAllExpenses = async (req, res) => {
+  console.log('getAllExpenses payload:', req.body);
   try {
     const { userId } = req.body;
-    if (!userId) return res.send(error(401, 'userId required'));
+    if (!userId) {
+      console.log('getAllExpenses missing userId');
+      return res.send(error(401, 'userId required'));
+    }
     if (useMock) {
       const db = readDB();
       const user = db.users.find(u => u._id === userId);
@@ -164,7 +179,11 @@ const getAllExpenses = async (req, res) => {
       return res.send(success(200, expenses));
     }
     const user = await userModel.findById(userId).populate('expense_id');
-    const expenses = (user && user.expense_id) ? user.expense_id.sort((a,b)=> new Date(b.date)- new Date(a.date)) : [];
+    if (!user) {
+      console.log('getAllExpenses failed: no user found for', userId);
+      return res.send(error(401, 'User not found. Please login again.'));
+    }
+    const expenses = (user.expense_id) ? user.expense_id.sort((a,b)=> new Date(b.date)- new Date(a.date)) : [];
     return res.send(success(200, expenses));
   } catch (e) {
     return res.send(error(500, e.message));

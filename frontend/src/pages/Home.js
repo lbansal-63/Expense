@@ -30,6 +30,8 @@ function Home() {
   const [userdata] = useState(() => {
     const user = JSON.parse(localStorage.getItem('User')) || {};
     if (!user._id && user.id) user._id = user.id;
+    if (!user._id && user.userId) user._id = user.userId;
+    if (!user._id && user.message && user.message._id) user._id = user.message._id;
     return user;
   });
   const [userexp, setUserexp] = useState([]);
@@ -52,9 +54,15 @@ function Home() {
   useEffect(() => {
     if (!localStorage.getItem('User')) {
       navigate('/login');
+      return;
+    }
+    if (!userdata._id) {
+      console.warn('Home loaded without user._id', userdata);
+    } else {
+      console.log('Home loaded with userId', userdata._id);
     }
     loadExpenses();
-  }, [userdata._id, navigate, loadExpenses]);
+  }, [userdata, navigate, loadExpenses]);
 
   const getTotal = (expenses = userexp) => {
     return expenses.reduce((sum, item) => sum + item.amount, 0);
@@ -70,6 +78,7 @@ function Home() {
 
     const expInfo = {
       usersid: userdata._id,
+      userId: userdata._id,
       category,
       date: selectDate instanceof Date ? selectDate.toISOString() : selectDate,
       amount: parsedAmount,

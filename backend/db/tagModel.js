@@ -1,4 +1,4 @@
-/*const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const tagSchema = new mongoose.Schema({
     userId : {
@@ -26,4 +26,4 @@ tagSchema.index({ userId : 1, tagName : 1 }, { unique : true });
 
 const tagModel = mongoose.model('tags', tagSchema);
 
-module.exports = tagModel;*/
+module.exports = tagModel;

@@ -5,21 +5,41 @@ import { toast } from 'react-hot-toast';
 export const getUserExpenses = async (userId) => {
     try {
         const response = await axiosClient.post('/expenses/allExpenses', { userId });
-        const msg = response?.data?.message;
-        const list = Array.isArray(msg) ? msg : [];
+        if (response.data?.status !== 'success' || !Array.isArray(response.data?.message)) {
+            const message = response.data?.message || 'Failed to fetch expenses';
+            console.error('getUserExpenses error:', response.data);
+            if (response.data?.statusCode === 401) {
+                localStorage.removeItem('User');
+                toast.error('Session expired. Please log in again.');
+                window.location.href = '/login';
+                return [];
+            }
+            toast.error(message);
+            return [];
+        }
+        const list = response.data.message;
         const exp = list.sort((a, b) => new Date(b.date) - new Date(a.date));
         return exp;
     } catch (error) {
         console.log(error.message);
         toast.error('Failed to fetch expenses');
+        return [];
     }
 };
 
 export const createExpense = async (expInfo) => {
     try {
         const response = await axiosClient.post('/expenses/addExpense', expInfo);
-        if (response.data.statusCode !== 200) {
-            toast.error(`${response.data.message}`);
+        if (response.data?.status !== 'success' || response.data?.statusCode !== 200) {
+            const message = response.data?.message || 'Failed to create expense';
+            console.error('createExpense error:', response.data);
+            if (response.data?.statusCode === 401) {
+                localStorage.removeItem('User');
+                toast.error('Session expired. Please log in again.');
+                window.location.href = '/login';
+                return;
+            }
+            toast.error(message);
             return;
         }
         toast.success('Expense created successfully');

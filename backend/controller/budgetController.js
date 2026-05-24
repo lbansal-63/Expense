@@ -3,7 +3,6 @@ let budgetModel, expenseModel;
 try { budgetModel = require('../db/budgetModel'); } catch (e) { budgetModel = null; }
 try { expenseModel = require('../db/expenseModel'); } catch (e) { expenseModel = null; }
 
-const useMock = process.env.MONGO_URI ? false : true; // Use MongoDB if URI is present
 const mockBudgets = [];
 
 

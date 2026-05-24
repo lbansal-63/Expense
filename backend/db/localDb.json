@@ -28,13 +28,55 @@
       "username": "laksha",
       "email": "laksha@gmail.com",
       "password": "123456",
-      "expense_id": [],
+      "expense_id": [
+        "mpf8f46ykllkxt"
+      ],
       "preferredCurrency": "INR",
       "savingsGoal": 0,
       "savingsTarget": 0,
       "createdAt": "2026-04-30T11:48:12.398Z",
       "avatar": "https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka"
+    },
+    {
+      "_id": "1779283246787",
+      "username": "testuser",
+      "email": "test@example.com",
+      "password": "password123",
+      "expense_id": [],
+      "preferredCurrency": "INR",
+      "savingsGoal": 0,
+      "savingsTarget": 0,
+      "createdAt": "2026-05-20T13:20:46.787Z"
     }
   ],
-  "expenses": []
+  "expenses": [
+    {
+      "_id": "mpf8f46ykllkxt",
+      "amount": 5000,
+      "category": "Vehicle",
+      "date": "2026-05-17T18:30:00.000Z",
+      "usersid": "1777549692398",
+      "description": "",
+      "tags": [],
+      "currency": "INR",
+      "isRecurring": false,
+      "recurringFrequency": "none",
+      "splitWith": [],
+      "isEdited": false
+    },
+    {
+      "_id": "mpgxns1i8ctqag",
+      "amount": 3000,
+      "category": "Vehicle",
+      "date": "2026-05-18T18:30:00.000Z",
+      "usersid": "6a0efc1280ad12138942dfa5",
+      "description": "",
+      "tags": [],
+      "currency": "INR",
+      "isRecurring": false,
+      "recurringFrequency": "none",
+      "splitWith": [],
+      "isEdited": false
+    }
+  ]
 }

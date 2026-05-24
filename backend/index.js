@@ -2,6 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
+
+// Define a dynamic global useMock getter to gracefully fall back when DB connection fails
+Object.defineProperty(global, 'useMock', {
+    get() {
+        return !process.env.MONGO_URI || global.isMockMode === true;
+    },
+    configurable: true
+});
+
 const connectDb = require('./db/db');
 const userRouter = require('./router/userRouter')
 const expenseRouter = require('./router/expenseRouter')
@@ -22,6 +31,16 @@ app.use('/ai', aiRouter)
 connectDb();
 
 const port = process.env.PORT || process.env.PORT_NO || 4000;
-app.listen(port , ()=>{
-        console.log(`Server running on port ${port}`);
-})
+const server = app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
+
+server.on('error', (err) => {
+    if (err && err.code === 'EADDRINUSE') {
+        console.error(`Port ${port} already in use. Stop the other process or set PORT env var.`);
+        process.exit(1);
+    } else {
+        console.error(err);
+        process.exit(1);
+    }
+});

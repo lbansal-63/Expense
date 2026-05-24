@@ -1,7 +1,5 @@
 const tagModel = require('../db/tagModel');
 const { error, success } = require('../utils/handler');
-
-const useMock = process.env.MONGO_URI ? false : true; // Use MongoDB if URI is present
 const mockTags = [];
 
 const createTag = async (req, res) => {

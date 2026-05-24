@@ -4,7 +4,6 @@ const { error, success } = require('../utils/handler');
 const userModel = require('../db/userModel');
 
 const dbPath = path.join(__dirname, '../db/localDb.json');
-const useMock = process.env.MONGO_URI ? false : true;
 
 // Helper to read DB
 const readDB = () => {
